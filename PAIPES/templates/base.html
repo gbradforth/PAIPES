@@ -1,0 +1,11 @@
+<!doctype html>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<ul>
+  {% for file in files %}
+  <li>
+      <a href="{{ (request.path + '/' if request.path != '/' else '') + file }}">
+          {{ (request.path + '/' if request.path != '/' else '') + file }}
+      </a>
+  </li>
+  {% endfor %}
+</ul>

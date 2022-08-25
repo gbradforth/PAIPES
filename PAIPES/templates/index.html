@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>PAIPES</title>
+
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" type="text/css" media="all" />
+	</head>
+
+	<body>
+		<div class="save-load">
+			<form action="/">
+				<input type="file" id="myfile" name="myfile" accept=""><br>
+				<button class="button" id="select">Select</button> 
+			</form>
+
+			<pre>    Preview Image             Data Statistics   </pre>
+			<img src="{{url_for('static', filename='mouse3.jpg')}}" width="200" height="200" style="float:left;border:2px solid;">
+			<img src="{{url_for('static', filename='graph.jpg')}}" width="200" height="200" style="float:right;border:2px solid;"><br><br><br><br><br><br><br><br><br>
+			<p>Some metadata:</p>
+		</div>
+		<div class="tabs-block">
+		<div class="tabs">
+            <input type="radio" name="tabs" id="tab1" checked="checked" />
+            <label for="tab1">SOS</label>
+				<div class="tab">
+					<img src="{{url_for('static', filename='mouse3.jpg')}}" id="mouseIm" width="300" height="300" style="float:left">
+					<h3>SOS Estimate:</h3>
+						<p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<span id="output"></span> m/s </p>
+						<br><br><br><br><br>
+                    <div class="slidecontainer">
+                        <input type="range" min="1450" max="1550" value="1500" class="slider" id="range">
+                    </div>
+					<button class="button" id ="saveSOS">Save</button> <br>
+					<p>Saved: <span id="SOS">1500</span> m/s </p>
+				</div>
+
+            <input type="radio" name="tabs" id="tab2"/>
+            <label for="tab2">ROI</label>
+				<div class="tab">
+				    <p>ROI</p>
+				</div>
+
+            <input type="radio" name="tabs" id="tab3"/>
+            <label for="tab3">Unmixing</label>
+				<div class="tab">
+				    <p>Wavelength nm</p>
+
+					<img src="{{url_for('static', filename='mouse2.jpg')}}" id="unmix" width="200" height="200" style="float:right">
+					<form method="get">
+						<input type="checkbox" id="700" name="value" value="700">700 <br>
+						<input type="checkbox" id="750" name="value" value="750">750 <br>
+						<input type="checkbox" id="800" name="value" value="800">800 <br>
+						<input type="checkbox" id="850" name="value" value="850">850 <br>
+						<input type="checkbox" id="900" name="value" value="900">900 <br>
+						<input type="checkbox" id="950" name="value" value="950">950 <br>
+					</form>
+					<button class="button" id="unmix">Unmix</button>
+					<p>Your selected: <span id="unOut"> </span></p>
+
+					<br><br>
+					<form>
+						<p>Data Assumption: 
+							<select id="dataAssum">
+							<option value="mNm" selected>Mouse, No Melanin</option>
+							<option value="mM">Mouse, Melanin</option>
+						</select></p>
+						<p> 
+							Your selected: 
+							<span id = "data"> </span> </p>  
+					</form>
+				</div>
+
+            <input type="radio" name="tabs" id="tab4"/>
+            <label for="tab4">Analysis</label>
+				<div class="tab"> 
+				    <p>Analysis</p>
+				</div>
+
+            <input type="radio" name="tabs" id="tab5"/>
+            <label for="tab5">Reconstruction</label>
+				<div class="tab">
+				    <p>Reconstruction</p>
+				</div>    
+        </div>
+	</div>
+	<script>
+		var slider = document.getElementById("range");
+		var output = document.getElementById("output");
+		output.innerHTML = slider.value;
+
+		slider.oninput = function() {
+  			output.innerHTML = this.value;
+			if (this.value == 1450){
+				document.getElementById("mouseIm").src = "{{url_for('static', filename='mouse2.jpg')}}";
+			}
+			else if (this.value == 1550)
+			{
+				document.getElementById("mouseIm").src = "{{url_for('static', filename='mouse.jpg')}}";
+			}
+			else
+			{
+				document.getElementById("mouseIm").src = "{{url_for('static', filename='mouse3.jpg')}}";
+			}
+		}
+
+		var saveSOS = document.getElementById("saveSOS");
+		var SOSoutput = document.getElementById("SOS");
+		var SOS = 150;
+		saveSOS.onclick = function(){
+			SOS = slider.value;
+			SOSoutput.innerHTML = SOS;
+		}
+
+		var mylist = document.getElementById("dataAssum");  
+		mylist.onchange = function(){  
+			document.getElementById("data").innerHTML = mylist.options[mylist.selectedIndex].text;  
+		}  
+		
+	</script>
+	</body>
+</html>
